@@ -1,0 +1,60 @@
+/*
+ * NightGlyph - 共通ハードウェア定義（左右共用）
+ *
+ * マトリクス: 5行 × 6列、ダイオード方向: col2row
+ * 左側 col 0-5、右側 col 0-5 (col-offset=6 でグローバル 6-11 にマップ)
+ *
+ * キー配置 (左→右、物理順):
+ *   Row0: ` 1 2 3 4 5  | 6 7 8 9 0 -
+ *   Row1: Tab Q W E R T  | Y U I O P =
+ *   Row2: Ctrl A S D F G | H J K L ; '
+ *   Row3: Shift Z X C V B | N M , . / Shift
+ *   Row4: (thumb) GUI Spc BSPC | DEL Ent RAlt
+ */
+
+#include <dt-bindings/zmk/matrix_transform.h>
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix-transform = &default_transform;
+    };
+
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <12>;
+        rows = <5>;
+        /*
+         * | 左側 COL0-5 (x=0→95)    | 右側 COL5→0 (x=16→111, col-offset=6 でグローバル11→6)
+         */
+        map = <
+            RC(0,0)  RC(0,1)  RC(0,2)  RC(0,3)  RC(0,4)  RC(0,5)    RC(0,11) RC(0,10) RC(0,9)  RC(0,8)  RC(0,7)  RC(0,6)
+            RC(1,0)  RC(1,1)  RC(1,2)  RC(1,3)  RC(1,4)  RC(1,5)    RC(1,11) RC(1,10) RC(1,9)  RC(1,8)  RC(1,7)  RC(1,6)
+            RC(2,0)  RC(2,1)  RC(2,2)  RC(2,3)  RC(2,4)  RC(2,5)    RC(2,11) RC(2,10) RC(2,9)  RC(2,8)  RC(2,7)  RC(2,6)
+            RC(3,0)  RC(3,1)  RC(3,2)  RC(3,3)  RC(3,4)  RC(3,5)    RC(3,11) RC(3,10) RC(3,9)  RC(3,8)  RC(3,7)  RC(3,6)
+            RC(4,0)  RC(4,1)  RC(4,2)                                          RC(4,8)  RC(4,7)  RC(4,6)
+        >;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "col2row";
+
+        col-gpios
+            = <&gpio0  2 GPIO_ACTIVE_HIGH>   /* COL0: P0.02 */
+            , <&gpio0  3 GPIO_ACTIVE_HIGH>   /* COL1: P0.03 */
+            , <&gpio0 28 GPIO_ACTIVE_HIGH>   /* COL2: P0.28 */
+            , <&gpio0 29 GPIO_ACTIVE_HIGH>   /* COL3: P0.29 */
+            , <&gpio0  4 GPIO_ACTIVE_HIGH>   /* COL4: P0.04 */
+            , <&gpio0  5 GPIO_ACTIVE_HIGH>   /* COL5: P0.05 */
+            ;
+
+        row-gpios
+            = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW0: P1.11 */
+            , <&gpio1 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW1: P1.12 */
+            , <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW2: P1.13 */
+            , <&gpio1 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW3: P1.14 */
+            , <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* ROW4: P1.15 */
+            ;
+    };
+};

@@ -1,0 +1,6 @@
+#include "nightglyph.dtsi"
+
+&kscan0 {
+    /* 右側は COL0-5 をグローバル COL6-11 にオフセット */
+    col-offset = <6>;
+};

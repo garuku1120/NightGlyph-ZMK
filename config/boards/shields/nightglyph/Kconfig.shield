@@ -1,0 +1,5 @@
+config SHIELD_NIGHTGLYPH_LEFT
+    def_bool $(shields_list_contains,nightglyph_left)
+
+config SHIELD_NIGHTGLYPH_RIGHT
+    def_bool $(shields_list_contains,nightglyph_right)

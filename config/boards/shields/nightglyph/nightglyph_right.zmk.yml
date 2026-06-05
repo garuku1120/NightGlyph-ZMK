@@ -1,0 +1,9 @@
+file_format: "1"
+id: nightglyph_right
+name: NightGlyph Right
+type: shield
+url: ""
+features:
+  - keys
+siblings:
+  - nightglyph_left
